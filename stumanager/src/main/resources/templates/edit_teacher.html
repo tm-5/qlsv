@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Edit Teacher</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+	<div class="container mt-5">
+		<h1 class="text-center mb-4">Edit Teacher</h1>
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<form id="editTeacherForm" th:action="@{/updateTeacher}" method="post" th:object="${teacher}"
+					onsubmit="return validateForm()">
+					<div class="form-group">
+						<label for="teacherID">Mã giảng viên</label>
+						<input type="text" class="form-control" id="teacherID" th:field="*{teacherID}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="teachername">Tên</label>
+						<input type="text" class="form-control" id="teachername" th:field="*{teachername}" required>
+					</div>
+					<div class="form-group">
+						<label for="faculty">Chuyên ngành</label>
+						<input type="text" class="form-control" id="faculty" th:field="*{faculty}" required>
+					</div>
+					<div class="form-group">
+						<label for="department">Khoa</label>
+						<input type="text" class="form-control" id="department" th:field="*{department}" required>
+					</div>
+					<div class="form-group">
+						<label for="userID">User ID</label>
+						<input type="text" class="form-control" id="userID" th:field="*{user.userId}" readonly>
+					</div>
+					<button type="submit" class="btn btn-primary">Update</button>
+					<button type="button" class="btn btn-success ml-3" onclick="resetForm()">Reset</button>
+					<a href="/manage_teacher" class="btn btn-danger" style="float: right;">Cancel</a>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function resetForm() {
+			document.getElementById("editTeacherForm").reset();
+		}
+	</script>
+</body>
+
+</html>

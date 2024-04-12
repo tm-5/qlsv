@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Edit Student</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+	<div class="container mt-5">
+		<h1 class="text-center mb-4">Edit Student</h1>
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+
+				<form id="editStudentForm" th:action="@{/updateStudent}" method="post" th:object="${student}"
+					onsubmit="return validateForm()">
+					<div class="form-group">
+						<label for="studentID">Mã sinh viên</label>
+						<input type="text" class="form-control" id="studentID" th:field="*{studentID}" readonly>
+					</div>
+					<div class="form-group">
+						<label for="firstname">Họ</label>
+						<input type="text" class="form-control" id="firstname" th:field="*{firstname}" required>
+					</div>
+					<div class="form-group">
+						<label for="lastname">Tên</label>
+						<input type="text" class="form-control" id="lastname" th:field="*{lastname}" required>
+					</div>
+					<div class="form-group">
+						<label for="gender">Giới tính</label>
+						<select class="form-control" id="gender" th:field="*{gender}" required>
+							<option value="Nam">Nam</option>
+							<option value="Nữ">Nữ</option>
+							<option value="Khác">Khác</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="email">Email</label>
+						<input type="email" class="form-control" id="email" th:field="*{email}" required>
+					</div>
+					<button type="submit" class="btn btn-primary ">Update</button>
+					<button type="button" class="btn btn-success ml-3 " onclick="resetForm()">Reset</button>
+					<a href="/manage_student" class="btn btn-danger " style="float: right;">Cancel</a>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function resetForm() {
+			document.getElementById("editStudentForm").reset();
+		}
+	</script>
+</body>
+
+</html>

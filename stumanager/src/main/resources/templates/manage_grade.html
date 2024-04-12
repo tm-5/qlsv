@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Manage Grade</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+		integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<style>
+		.sticky-top {
+			position: -webkit-sticky;
+			position: sticky;
+			top: 0;
+			z-index: 10;
+		}
+
+		#searchInput {
+			width: 200px;
+		}
+
+		.table tbody tr {
+			height: 50px;
+		}
+
+		.table th,
+		.table td {
+			vertical-align: middle;
+		}
+
+		.search-icon {
+			position: absolute;
+			top: 50%;
+			right: 10px;
+			transform: translateY(-50%);
+			cursor: pointer;
+		}
+
+		.alert-sticky {
+			position: -webkit-sticky;
+			position: sticky;
+			top: 56px;
+			z-index: 11;
+			float: right;
+			width: 20%;
+		}
+	</style>
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: rgb(255, 0, 0);">
+		<a class="navbar-brand" th:href="@{/admin_home}" style="color: white;">Admin</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a th:href="@{/manage_user}" class="nav-link" style="color: white;">Users</a>
+				</li>
+				<li class="nav-item">
+					<a th:href="@{/manage_student}" class="nav-link" style="color: white;">Students</a>
+				</li>
+				<li class="nav-item">
+					<a th:href="@{/manage_teacher}" class="nav-link" style="color: white;">Teachers</a>
+				</li>
+				<li class="nav-item">
+					<a th:href="@{/manage_grade}" class="nav-link" style="color: white;">Grades</a>
+				</li>
+				<li class="nav-item">
+					<a th:href="@{/logout}" class="nav-link" style="color: white;">Đăng xuất</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<div th:if="${successMessage}" id="successMessage"
+		class="alert alert-success alert-dismissible fade show alert-sticky" role="alert">
+		<strong th:text="${successMessage}"></strong>
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="false">&times;</span>
+		</button>
+	</div>
+	<div th:if="${successMess}" id="successMessage" class="alert alert-danger alert-dismissible fade show alert-sticky"
+		role="alert">
+		<strong th:text="${successMess}"></strong>
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="false">&times;</span>
+		</button>
+	</div>
+	<div class="container mt-3">
+		<h3 class="text-center mb-3">Bảng điểm</h3>
+		<div class="row mt-3 mb-4">
+			<div class="col-lg-6 offset-lg-3">
+				<div class="input-group">
+					<input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm">
+					<div class="input-group-append">
+						<button class="btn btn-primary" type="button">
+							<i class="fas fa-search"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<table id="gradeTable" class="table">
+			<thead>
+				<tr>
+					<th>MSV</th>
+					<th>Mã môn</th>
+					<th>Nhóm</th>
+					<th>Bài tập lớn</th>
+					<th>Giữa kỳ</th>
+					<th>Thực hành</th>
+					<th>Chuyên cần</th>
+					<th>Cuối kỳ</th>
+					<th>Tổng kết</th>
+					<th>Hệ chữ</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="grade : ${list}">
+					<td th:text="${grade.id.studentID}"></td>
+					<td th:text="${grade.id.subjectID}"></td>
+					<td th:text="${grade.group}"></td>
+					<td th:text="${grade.assignmentScore}"></td>
+					<td th:text="${grade.examScore}"></td>
+					<td th:text="${grade.practicalScore}"></td>
+					<td th:text="${grade.attendanceScore}"></td>
+					<td th:text="${grade.finalExamScore}"></td>
+					<td th:text="${grade.componentScore}"></td>
+					<td th:text="${grade.letterGrade}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			$("#searchInput").on("keyup", function () {
+				var value = $(this).val().toLowerCase();
+				$("tbody tr").filter(function () {
+					$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+				});
+			});
+		});
+
+		setTimeout(function () {
+			$(".alert").alert("close");
+		}, 5000);
+	</script>
+</body>
+
+</html>

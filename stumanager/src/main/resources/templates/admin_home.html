@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Admin Home</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+	<style>
+		.sticky-top {
+			position: -webkit-sticky;
+			position: sticky;
+			top: 0;
+			z-index: 1020;
+		}
+
+		#searchInput {
+			width: 200px;
+		}
+
+		.form-group {
+			margin-bottom: 15px;
+		}
+
+		.btn-group button {
+			margin-right: 5px;
+		}
+		.btn-outline-danger {
+		        color: rgb(255, 0, 0);
+		        border-color: rgb(255, 0, 0);
+		    }
+		    
+		    .btn-outline-danger:hover {
+		        background-color: rgb(255, 0, 0);
+		        color: white;
+		    }
+	</style>
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: rgb(255, 0, 0);">
+		<a class="navbar-brand" href="#" style="color: white;">Admin</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a th:href="@{/manage_user}" class="nav-link" style="color: white;">Users</a>
+				</li>
+				<li class="nav-item">
+					<a th:href="@{/manage_student}" class="nav-link" style="color: white;">Students</a>
+				</li>
+				<li class="nav-item">
+					<a th:href="@{/manage_teacher}" class="nav-link" style="color: white;">Teachers</a>
+				</li>
+				<li class="nav-item">
+					<a th:href="@{/manage_grade}" class="nav-link" style="color: white;">Grades</a>
+				</li>
+				<li class="nav-item">
+					<a th:href="@{/logout}" class="nav-link" style="color: white;">Đăng xuất</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<div th:if="${successLog}" id="successLog" class="alert alert-success alert-dismissible fade show alert-sticky"
+		role="alert">
+		<strong th:text="${successLog}"></strong>
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="false">&times;</span>
+		</button>
+	</div>
+	<div class="container mt-3">
+		<h3>Thêm mới</h3>
+		<div class="btn-group" role="group" aria-label="Create New">
+		    <button type="button" class="btn btn-outline-danger" onclick="showForm('student')">Student</button>
+		    <button type="button" class="btn btn-outline-danger" onclick="showForm('teacher')">Teacher</button>
+		    <button type="button" class="btn btn-outline-danger" onclick="showForm('subject')"></button>
+		</div>
+
+		<div id="studentDiv" style="display: block;">
+			<div class="container mt-3">
+				<h4 class="text-center">Sinh viên</h4>
+				<form id="studentForm" th:action="@{/saveStudent}" method="post" th:object="${student}">
+					<div class="row justify-content-center">
+						<div class="col-8">
+							
+							<div class="form-group">
+								<label for="studentID">Student ID</label>
+								<input type="text" class="form-control" id="studentID" name="studentID" th:field="*{studentID}"
+									required>
+							</div>
+							<div class="form-group">
+								<label for="firstname">Họ</label>
+								<input type="text" class="form-control" id="firstname" name="firstname" th:field="*{firstname}"
+									required>
+							</div>
+							<div class="form-group">
+								<label for="lastname">Tên</label>
+								<input type="text" class="form-control" id="lastname" name="lastname" th:field="*{lastname}"
+									required>
+							</div>
+							<div class="form-group">
+								<label for="gender">Giới tính</label>
+								<select class="form-control" id="gender" name="gender" th:field="*{gender}" required>
+									<option value="Nam">Nam</option>
+									<option value="Nữ">Nữ</option>
+									<option value="Khác">Khác</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="email">Email</label>
+								<input type="email" class="form-control" id="email" name="email" th:field="*{email}" required>
+							</div>
+							<button type="submit" class="btn btn-primary">Thêm mới</button>
+							<button type="button" class="btn btn-danger ml-3 " onclick="resetForm('student')">Reset</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</div>
+		<div id="teacherDiv" style="display: none;">
+			<div class="container mt-3">
+				<h4 class="text-center">Giáo viên</h4>
+				<form id="teacherForm" th:action="@{/saveTeacher}" method="post" th:object="${teacher}">
+					<div class="row justify-content-center">
+						<div class="col-8">
+							
+							<div class="form-group">
+								<label for="teacherID">ID</label>
+								<input type="text" class="form-control" id="teacherID" name="teacherID" th:field="*{teacherID}"
+									required>
+							</div>
+							<div class="form-group">
+								<label for="teachername">Tên</label>
+								<input type="text" class="form-control" id="teachername" name="teachername"
+									th:field="*{teachername}" required>
+							</div>
+							<div class="form-group">
+								<label for="faculty">Chuyên ngành</label>
+								<input type="text" class="form-control" id="faculty" name="faculty" th:field="*{faculty}"
+									required>
+							</div>
+							<div class="form-group">
+								<label for="department">Khoa</label>
+								<input type="text" class="form-control" id="department" name="department"
+									th:field="*{department}" required>
+							</div>
+		
+							<button type="submit" class="btn btn-primary">Thêm mới</button>
+							<button type="button" class="btn btn-danger ml-3" onclick="resetForm('teacher')">Reset</button>
+						</div>
+					</div>												
+
+				</form>
+			</div>
+		</div>
+		<div class="mt-3">
+			<div th:if="${successMessage}" id="successMessage"
+				class="alert alert-success alert-dismissible fade show alert-sticky" role="alert">
+				<strong th:text="${successMessage}"></strong>
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="false">&times;</span>
+				</button>
+			</div>
+			<div th:if="${successMess}" id="successMessage"
+				class="alert alert-danger alert-dismissible fade show alert-sticky" role="alert">
+				<strong th:text="${successMess}"></strong>
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="false">&times;</span>
+				</button>
+			</div>
+			
+		</div>
+	</div>
+
+	<script>
+		function resetForm(role) {
+			document.getElementById(role + "Form").reset();
+		}
+		function showForm(role) {
+			document.getElementById("studentDiv").style.display = "none";
+			document.getElementById("teacherDiv").style.display = "none";
+
+			document.getElementById(role + "Div").style.display = "block";
+		}
+		setTimeout(function () {
+			$(".alert").alert("close");
+		}, 5000);
+	</script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>
